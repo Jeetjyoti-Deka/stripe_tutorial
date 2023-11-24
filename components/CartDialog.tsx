@@ -12,13 +12,23 @@ import { useCartContext } from "@/context/CartContext";
 import { getProductById } from "@/lib/data";
 import { Button } from "./ui/button";
 import DeleteFromCart from "./DeleteFromCart";
+import { checkout } from "@/lib/actions/stripe.action";
+import { useRouter } from "next/navigation";
 
 const CartDialog = () => {
+  const router = useRouter();
   const cart = useCartContext();
   const totalProductsCount = cart.cartProducts.reduce(
     (acc, cur) => acc + cur.qty,
     0
   );
+
+  const stripeCheckout = async () => {
+    const checkout_url = await checkout(cart.cartProducts);
+
+    router.push(checkout_url!);
+  };
+
   return (
     <Dialog>
       <DialogTrigger className="bg-white p-3 rounded-full">
@@ -66,7 +76,9 @@ const CartDialog = () => {
               <p>{totalProductsCount}</p>
             </div>
             <div className="w-full flex justify-end mt-4">
-              <Button className="bg-blue-500">Purchase</Button>
+              <Button className="bg-blue-500" onClick={stripeCheckout}>
+                Purchase
+              </Button>
             </div>
           </div>
         ) : (

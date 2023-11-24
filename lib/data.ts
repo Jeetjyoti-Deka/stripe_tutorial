@@ -1,16 +1,16 @@
 export const PRODUCTS = [
   {
-    id: "1",
+    id: "price_1OG2gVSB9hgZSR471PASK1bv",
     title: "Coffee",
     price: 4.99,
   },
   {
-    id: "2",
+    id: "price_1OG2hlSB9hgZSR47ly0DpIcl",
     title: "Sunglasses",
     price: 9.99,
   },
   {
-    id: "3",
+    id: "price_1OG2ijSB9hgZSR47LN8xSb2d",
     title: "Camera",
     price: 39.99,
   },
