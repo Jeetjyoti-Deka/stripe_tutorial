@@ -24,8 +24,9 @@ const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartProducts, setCartProducts] = useState<any[]>([]);
 
   useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem("cart") || "");
-    if (cartItems && cartItems.length > 0) {
+    const cartItemsString = localStorage.getItem("cart");
+    if (cartItemsString !== "" && cartItemsString !== null) {
+      const cartItems = JSON.parse(cartItemsString);
       setCartProducts(cartItems);
     }
   }, []);
