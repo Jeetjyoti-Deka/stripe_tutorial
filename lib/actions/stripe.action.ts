@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET as string);
@@ -23,8 +22,10 @@ export async function checkout(data: { id: string; qty: number }[]) {
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
+      success_url:
+        `${process.env.DOMAIN}/success` || "http://localhost:3000/success",
+      cancel_url:
+        `${process.env.DOMAIN}/cancel` || "http://localhost:3000/cancel",
     });
 
     return session.url as string;

@@ -18,16 +18,17 @@ type CartContextType = {
   getTotalCost: () => number;
 };
 
-const getInitialState = () => {
-  const cartProducts = localStorage.getItem("cart");
-
-  return cartProducts ? JSON.parse(cartProducts) : [];
-};
-
 const CartContext = createContext<CartContextType | null>(null);
 
 const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cartProducts, setCartProducts] = useState<any[]>(getInitialState);
+  const [cartProducts, setCartProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("cart") || "");
+    if (cartItems && cartItems.length > 0) {
+      setCartProducts(cartItems);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartProducts));
