@@ -2,7 +2,7 @@
 
 import { getProductById } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type CartItemType = {
   id: string;
@@ -18,10 +18,20 @@ type CartContextType = {
   getTotalCost: () => number;
 };
 
+const getInitialState = () => {
+  const cartProducts = localStorage.getItem("cart");
+
+  return cartProducts ? JSON.parse(cartProducts) : [];
+};
+
 const CartContext = createContext<CartContextType | null>(null);
 
 const CartContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cartProducts, setCartProducts] = useState<any[]>([]);
+  const [cartProducts, setCartProducts] = useState<any[]>(getInitialState);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartProducts));
+  }, [cartProducts]);
 
   const getProductQuantity = (id: string) => {
     const existItem: CartItemType = cartProducts.find(
